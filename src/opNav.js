@@ -5,7 +5,6 @@ class OPNav {
   }
 
   _findElements () {
-    console.log(this._tag)
     let sections = document.querySelectorAll(`${this._tag}[data-section="true"]`)
     if (sections.length < 1) return console.error('Couldn\'t find elements')
 
@@ -19,22 +18,34 @@ class OPNav {
       let label = element.getAttribute('data-label')
       let subSections = element.querySelectorAll('section[data-sub-section="true"]')
 
+      let elId = this._attachId(element)
+
       if (subSections.length > 0) {
-        menuContent += `<li> ${label} <ul>`
-        
+        menuContent += `<li><a href="#${elId}"> ${label} </a><ul>`
+
         for (let sub of subSections) {
           let subLabel = sub.getAttribute('data-label')
-          menuContent += `<li> ${subLabel} </li>`
+
+          let subId = this._attachId(sub)
+          menuContent += `<li><a href="#${subId}"> ${subLabel} </a></li>`
         }
 
-        menuContent += '</ul> </li>'
+        menuContent += '</ul></li>'
       } else {
-        menuContent += `<li> ${label} </li>`
+        menuContent += `<li><a href="#${elId}"> ${label} <a/></li>`
       }
     }
 
     menuContent += '</ul>'
     return menuContent
+  }
+
+  _attachId (element) {
+    var r = Math.floor(Math.random() * 1000)
+    var id = `op-nav-${r}`
+    element.setAttribute('id', id)
+
+    return id
   }
 
   _fillElement () {
