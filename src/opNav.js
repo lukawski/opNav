@@ -1,4 +1,4 @@
-class Menu {
+class OPNav {
   constructor (tag, menuId) {
     this._tag = tag
     this._menu = document.getElementById(menuId)
@@ -17,11 +17,17 @@ class Menu {
     var sections = this._findElements()
     for (let element of sections) {
       let label = element.getAttribute('data-label')
-      let subSection = element.querySelectorAll('section[data-sub-section="true"]')
+      let subSections = element.querySelectorAll('section[data-sub-section="true"]')
 
-      if (subSection.length > 0) {
-        let subLabel = subSection[0].getAttribute('data-label')
-        menuContent += `<li> ${label} <ul> <li> ${subLabel} </li> </ul> </li>`
+      if (subSections.length > 0) {
+        menuContent += `<li> ${label} <ul>`
+        
+        for (let sub of subSections) {
+          let subLabel = sub.getAttribute('data-label')
+          menuContent += `<li> ${subLabel} </li>`
+        }
+
+        menuContent += '</ul> </li>'
       } else {
         menuContent += `<li> ${label} </li>`
       }
